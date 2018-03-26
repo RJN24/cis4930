@@ -24,9 +24,9 @@ user_total = int(cur.fetchone()[0])
 user_correct += 8
 user_total += 10
 
-cur.execute("UPDATE users SET lv1_correct = (%s) WHERE user_id = 'DrPython2018'", [user_correct])
+cur.execute("UPDATE users SET lv1_correct = ? WHERE user_id = 'DrPython2018'", [user_correct])
 conn.commit()
-cur.execute("UPDATE users SET lv1_total = (%s) WHERE user_id = 'DrPython2018'", [user_total])
+cur.execute("UPDATE users SET lv1_total = ? WHERE user_id = 'DrPython2018'", [user_total])
 conn.commit()
 
 print("Table updated.")
