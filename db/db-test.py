@@ -1,3 +1,6 @@
+# This is purely an example file and is in no way a representation of what will be in our final product
+# DB is subject to change to SQLite3
+
 import psycopg2
 
 conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password='password'")
