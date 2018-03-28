@@ -1,4 +1,3 @@
-# Doing the same thing that db-test.py does, but using SQLite3
 # SQLite3 stores a db on disk that persists through sessions
 # This program demonstrates creating a table, inserting a user, querying/updating, and dropping a table
 
