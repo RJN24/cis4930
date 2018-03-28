@@ -1,4 +1,4 @@
-We will use a PostgreSQL db v10.3
+We will use a PostgreSQL db v10.3 (This is subject to change to SQLite3)
 
 To install:
 - visit https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
