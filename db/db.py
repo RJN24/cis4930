@@ -10,48 +10,9 @@ def createDbConnection(db_file):
 		print(e)
 	return None
 
-def createTable(stmt):
+def createTable():
 	try:
-		cur.execute(stmt)
-	except sqlite3.OperationalError as e:
-		print(e)
-
-def insertUser(uid, password):
-	try:
-		cipher_suite = Fernet(key)
-		encode_string = str.encode(password)
-		upw = cipher_suite.encrypt(encode_string)
-		cur.execute("INSERT INTO users (user_id, user_pw) VALUES (?, ?)", (uid, upw))
-		conn.commit()
-	except sqlite3.IntegrityError:
-		print(e)
-
-# Test decrypting password
-def retrievePassword(uid):
-	cur.execute("SELECT user_pw FROM users WHERE user_id = ?", (uid,))
-	one = cur.fetchone()
-	print(one)
-	print("Converting back to readable...")
-	decrypted = Fernet(key)
-	realpw = decrypted.decrypt(one[0])
-	pwstrip = str(realpw).replace("'", "")
-	upw = pwstrip[1:]
-	print(upw)
-
-# def updateUserScore(uid, lvl, correct):
-
-
-conn = createDbConnection("users.db")
-if (conn is None):
-	print("Error connecting to db")
-	sys.exit()
-
-cur = conn.cursor()
-key = Fernet.generate_key()
-
-
-cur.execute("DROP TABLE IF EXISTS users")
-table = """ CREATE TABLE IF NOT EXISTS users (
+		table = """ CREATE TABLE IF NOT EXISTS users (
                                         id integer PRIMARY KEY,
                                         user_id TEXT UNIQUE NOT NULL, 
 								        user_pw TEXT NOT NULL,
@@ -62,17 +23,54 @@ table = """ CREATE TABLE IF NOT EXISTS users (
 								        lv3_correct INTEGER DEFAULT 0,
 								        lv3_total INTEGER DEFAULT 0
                                     ); """
+		cur.execute(table)
+		conn.commit()
+	except sqlite3.OperationalError as e:
+		print(e)
 
-createTable(table)
+def insertUser(uid, password):
+	try:
+		cur.execute("SELECT * FROM users WHERE user_id = ?", (uid,))
+		present = cur.fetchone()
+		if present is not None:
+			return False
+		cipher_suite = Fernet(key)
+		encode_string = str.encode(password)
+		upw = cipher_suite.encrypt(encode_string)
+		cur.execute("INSERT INTO users (user_id, user_pw) VALUES (?, ?)", (uid, upw))
+		conn.commit()
+	except sqlite3.IntegrityError:
+		print(e)
 
-newUser = "someUser"
-pw = "secretpassword"
+def verifyLogin(uid, pw):
+	cur.execute("SELECT * FROM users WHERE user_id = ?", (uid,))
+	present = cur.fetchone()
+	if present is None:
+		return False
+	cur.execute("SELECT user_pw FROM users WHERE user_id = ?", (uid,))
+	one = cur.fetchone()
+	decrypted = Fernet(key)
+	realpw = decrypted.decrypt(one[0])
+	pwstrip = str(realpw).replace("'", "")
+	upw = pwstrip[1:]
+	if pw == upw:
+		return True
+	else:
+		return False
 
-insertUser(newUser, pw)
-retrievePassword(newUser)
+def closeDb():
+	cur.execute("DROP TABLE IF EXISTS users")
+	conn.commit()
+	cur.close()
+	conn.close()
 
-cur.execute("DROP TABLE IF EXISTS users")
-conn.commit()
+# def updateUserScore(uid, lvl, correct):
 
-cur.close()
-conn.close()
+# I may not need this sutff below
+conn = createDbConnection("users.db")
+if (conn is None):
+	print("Error connecting to db")
+	sys.exit()
+
+cur = conn.cursor()
+key = Fernet.generate_key()
