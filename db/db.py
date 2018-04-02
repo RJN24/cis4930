@@ -34,7 +34,11 @@ def retrievePassword(uid):
 	print("Converting back to readable...")
 	decrypted = Fernet(key)
 	realpw = decrypted.decrypt(one[0])
-	print(realpw)
+	pwstrip = str(realpw).replace("'", "")
+	upw = pwstrip[1:]
+	print(upw)
+
+# def updateUserScore(uid, lvl, correct):
 
 
 conn = createDbConnection("users.db")
