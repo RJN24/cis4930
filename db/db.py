@@ -1,5 +1,4 @@
 # This file contains all functions in relation to our db
-
 import sqlite3
 
 
