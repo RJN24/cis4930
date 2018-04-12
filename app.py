@@ -1,54 +1,70 @@
-import os
-#from os.path import join, dirname
-# from dotenv import load_dotenv
 import sqlite3 as sql
-from flask import Flask, request, Response, json, jsonify, render_template
+from flask import Flask, request, jsonify, render_template
 import uuid
 import re
 from fractions import Fraction
 
-#Environment Variables
-# dotenv_path = join(dirname(__file__), '.env')
-# load_dotenv(dotenv_path)
-
 app = Flask(__name__, template_folder='static')
 app.config["DEBUG"] = True
-
 
 if __name__ == "__main__":
     app.run(port=5000)
 
-#Route for /
+USERS_TABLE = """ CREATE TABLE IF NOT EXISTS users (
+                                id TEXT PRIMARY KEY,
+                                username TEXT UNIQUE NOT NULL, 
+                                password TEXT NOT NULL,
+                                lv1_correct INTEGER DEFAULT 0,
+                                lv1_total INTEGER DEFAULT 0,
+                                lv2_correct INTEGER DEFAULT 0,
+                                lv2_total INTEGER DEFAULT 0,
+                                lv3_correct INTEGER DEFAULT 0,
+                                lv3_total INTEGER DEFAULT 0); """
+
+EVENT_TABLE = """ CREATE TABLE IF NOT EXISTS event(
+                                id TEXT PRIMARY_KEY, 
+                                username TEXT, 
+                                eventName TEXT, 
+                                eventTime TEXT, 
+                                eventUrl TEXT); """
+
+
+# Route for /
 @app.route("/")
 def hello():
     return render_template('/index.html')
 
-#Make SQL cursor return dictionary 
+
+# Make SQL cursor return dictionary
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
 
-#Post request method for /login GETS USER INPUT
+
+# Post request method for /login GETS USER INPUT
 @app.route('/login', methods=['POST'])
 def login():
-    email =  request.form['email'];
+    user_id = request.form['username'];
     password = request.form['password'];
-    con = sql.connect("temp.db")
+    con = sql.connect("users.db")
     con.row_factory = dict_factory
     cur = con.cursor()
-    cur.execute("SELECT * FROM users WHERE email=?", (email,))
+    cur.execute(USERS_TABLE)
+    cur.execute("SELECT * FROM users WHERE username=?", (user_id,))
     temp = cur.fetchone()
     cur.close()
-    print(temp)
-    if email == temp["email"] and password == temp["password"]:
+    print("Trying to login as " + user_id)
+    if temp is None:
+        return jsonify({
+            'auth': False
+        })
+    elif user_id == temp["username"] and password == temp["password"]:
         return jsonify({
             'auth': True,
             'user': {
-                "email": email,
-                "firstName": temp["firstName"],
-                "lastName": temp["lastName"]
+                "username": user_id
             }
         })
     else:
@@ -56,52 +72,60 @@ def login():
             'auth': False
         })
 
-#Post request method for /register GETS USER INPUT
+
+# Post request method for /register GETS USER INPUT
 @app.route('/register', methods=['POST'])
 def register():
-    email =  request.form['emailreg'];
-    password = request.form['passwordreg'];
-    passwordconf = request.form['passwordconfreg'];
-    con = sql.connect("temp.db", timeout=10)
-    con.row_factory = dict_factory
-    cur = con.cursor()
-    # Uncomment the following line to create the table then comment it again after the first registration
-    # cur.execute("CREATE TABLE users(id INT PRIMARY_KEY, firstName TEXT, lastName TEXT, email TEXT UNIQUE, password TEXT)")
     try:
-        cur.execute("SELECT * FROM users WHERE email = " + email + ";")
+        print(request.form)
+        user_id = request.form['usernamereg'];
+        password = request.form['passwordreg'];
+        passwordconf = request.form['passwordconfreg'];
+        con = sql.connect("users.db", timeout=10)
+        con.row_factory = dict_factory
+        cur = con.cursor()
+        cur.execute(USERS_TABLE)
+        cur.execute("SELECT * FROM users WHERE username = ?", (user_id,))
         temp = cur.fetchone()
         print(temp)
-    except:
-        print("User not found")
-    if password == passwordconf:
-        uid = str(uuid.uuid4())
-        firstName = 'Fadi'
-        lastName = 'Bitar'
-        cur.execute("""INSERT INTO Users(id, firstName, lastName, email, password) VALUES (?,?,?,?,?);""", (uid, firstName, lastName, email, password))
-        con.commit()
-        cur.close()
-        con.close()
-        return jsonify({
-            'registered': True
-        })
+        if temp is not None:
+            print("Registration failed: {} already taken.".format(user_id))
+            cur.close()
+            con.close()
+            return jsonify({
+                'registered': False
+            })
+        if password == passwordconf:
+            uid = str(uuid.uuid4())
+            cur.execute("INSERT INTO users(id, username, password) VALUES (?,?,?)", (uid, user_id, password))
+            con.commit()
+            cur.close()
+            con.close()
+            return jsonify({
+                'registered': True
+            })
+        else:
+            cur.close()
+            con.close()
+            return jsonify({
+                'registered': False
+            })
+    except KeyError as e:
+        print(e)
 
-#Returns user's events RETURNS TO SCREEN
+
+# Returns user's events RETURNS TO SCREEN
 @app.route('/getEvents', methods=['GET'])
 def home():
-    #Print json from get request
+    # Print json from get request
     print(request.args)
-    #Save the email to a variable
-    email =  request.args.get("temp");
-    print(email)
-    con = sql.connect("temp.db")
+    user_id = request.args.get("temp");
+    print(user_id)
+    con = sql.connect("users.db")
     con.row_factory = dict_factory
     cur = con.cursor()
-    # Uncomment the following line to create the table then comment it again after the first registration
-    # cur.execute("CREATE TABLE event(id INT PRIMARY_KEY, email TEXT, eventName TEXT, eventTime TEXT, eventUrl TEXT)")
-    uid = str(uuid.uuid4())
-    # Uncomment to make a test Event
-    # cur.execute("""INSERT INTO event(id, email, eventName, eventTime, eventUrl) VALUES(?,?,?,?,?)""",(uid, email, 'Event Name 3', 'Date 3', 'bullsync3.com'))
-    cur.execute("SELECT * FROM event WHERE email=?", (email,))
+    cur.execute(EVENT_TABLE)
+    cur.execute("SELECT * FROM event WHERE username=?", (user_id,))
     eventdata = cur.fetchall()
     print(eventdata)
     con.commit()
@@ -111,26 +135,28 @@ def home():
         'events': eventdata
     });
 
+
 # GETS USER INPUT
 @app.route('/newEvent', methods=['POST'])
 def newEvent():
-    email = request.form['email']
-    eventName =  request.form['eventName'];
+    user_id = request.form['username']
+    eventName = request.form['eventName'];
     eventTime = request.form['eventTime'];
     eventUrl = request.form['eventUrl'];
-    con = sql.connect("temp.db", timeout=10)
+    con = sql.connect("users.db", timeout=10)
     con.row_factory = dict_factory
     cur = con.cursor()
-    # Uncomment the following line to create the table then comment it again after the first registration
-    # cur.execute("CREATE TABLE event(id INT PRIMARY_KEY, email TEXT, eventName TEXT, eventTime TEXT, eventUrl TEXT)")
+    cur.execute(EVENT_TABLE)
     uid = str(uuid.uuid4())
-    cur.execute("""INSERT INTO event(id, email, eventName, eventTime, eventUrl) VALUES (?,?,?,?,?);""", (uid, email, eventName, eventTime, eventUrl))
+    cur.execute("""INSERT INTO event(id, username, eventName, eventTime, eventUrl) VALUES (?,?,?,?,?);""",
+                (uid, user_id, eventName, eventTime, eventUrl))
     con.commit()
     cur.close()
     con.close()
     return jsonify({
         'newEventStatus': True
     })
+
 
 @app.route('/fracSolver', methods=['POST'])
 def fractionSolver():
@@ -139,25 +165,25 @@ def fractionSolver():
     m = re.search(patt2, fraction)
 
     try:
-        if m.group(2) != None and m.group(5) != None:
+        if m.group(2) is not None and m.group(5) is not None:
             nue1 = int(m.group(1))
             den1 = int(m.group(2))
             nue2 = int(m.group(4))
             den2 = int(m.group(5))
 
-        if m.group(2) == None and m.group(5) == None:
+        if m.group(2) is None and m.group(5) is None:
             nue1 = int(m.group(1))
             den1 = 1
             nue2 = int(m.group(4))
             den2 = 1
 
-        if m.group(2) == None and m.group(5) != None:
+        if m.group(2) is None and m.group(5) is not None:
             nue1 = int(m.group(1))
             den1 = 1
             nue2 = int(m.group(4))
             den2 = int(m.group(5))
 
-        if m.group(5) == None and m.group(2) != None:
+        if m.group(5) is None and m.group(2) is not None:
             nue1 = int(m.group(1))
             den1 = int(m.group(2))
             nue2 = int(m.group(4))
@@ -180,14 +206,17 @@ def fractionSolver():
         if m.group(3) == '/':
             R = X / Y
 
-        print("Soln is: ")
+        print("Solution is: ")
         print(R)
 
     except ZeroDivisionError:
-        R = "Sorry, 0 can not be part of the denominator. Please retry"
+        R = "Sorry, cannot divide by 0. Please retry."
 
     except:
-        R = "Sorry, you have entered an incorrect string. Please retry"
+        R = "Sorry, you have entered an incorrect input. Please retry."
 
     return jsonify({
         'fraction': R.__str__()})
+
+# @app.route('/getAverage', methods=['GET'])
+# def getUserAverage
