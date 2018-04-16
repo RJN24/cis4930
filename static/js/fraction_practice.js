@@ -136,16 +136,12 @@ $(document).ready(function(){
 			}
 			
 		});
-		//console.log("Number correct for " + operation + " : " + numCorrect);
 
 
-		results_per_level[operation] = numCorrect;
-
-
-		final_results[level] = results_per_level;
+		final_results[level] = numCorrect;
 
         console.log(final_results);
-        $('#display_results').text("Level " + level + " : " + results_per_level[operation] + "/10 correct");
+        $('#display_results').text("Level " + level + " : " + numCorrect + "/10 correct");
 		$.ajax({
             url: '/results',
 			data: JSON.stringify(final_results),
