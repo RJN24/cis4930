@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    $('#FracSolverComponent').hide();
     $('#homeComponent').hide();
     $('#Login').on('click', function() {
         $.ajax({
@@ -9,12 +10,20 @@ $(document).ready(function(){
                 console.log(response);
                 if(response.auth === true){
                     localStorage.setItem('userdata', JSON.stringify(response.user));
-                    $('#loginComponent').hide();
-                    $('#homeComponent').show();
-                    populateUser();
-                    getTable();
+                    if($( '#loginComponent' ).is(":visible")){
+                        $('#loginComponent').hide();
+                        $('#FracSolverComponent').hide();
+
+                        $('#homeComponent').show();
+                    }
+
+                    else{
+                        $('#homeComponent').show();
+                        $('#FracSolverComponent').hide();
+                    }
+
                 }else{
-                    $('#errorMessageLogin').text('Incorrect email and/or password.')
+                    $('#errorMessageLogin').text('Incorrect username and/or password.')
                 }
             },
             error: function(error) {
@@ -42,38 +51,25 @@ $(document).ready(function(){
         });
     });
 
-    function populateUser(){
-        let user = JSON.parse(localStorage.getItem('userdata'));
-        console.log(user)
-        $('#greeting').append(user.firstName)
-    }
+    $('#fracSolverButton').on('click', function() {
+        $('#homeComponent').show();
+        $('#FracSolverComponent').show();
+    })
 
-    function getTable(){
-        tempuser = localStorage.getItem('userdata');
-        let parseduser;
-        if (tempuser) {
-            parseduser = JSON.parse(tempuser);
-            let email = parseduser.email;
-            console.log(email)
-            $.ajax({
-                url: '/getEvents',
-                data: {
-                    temp: email
-                },
-                contentType: 'application/json',
-                dataType: 'json',
-                type: 'GET',
-                success: function(response) {
+    $('#EnterFrac').on('click', function() {
+        $.ajax({
+            url: '/fracSolver',
+            data: $('#formFracInput').serialize(),
+            type: 'POST',
+            success:
+                function (response) {
                     console.log(response);
-                    localStorage.setItem('userevents', JSON.stringify(response.events))
-                    response.events.forEach(function(val){
-                        $('#eventTableBody').append("<tr><td>" + val.eventName + "</td><td>" + val.eventTime + "</td><td>" + val.eventUrl + "</td></tr>")
-                    })
-                },
-                error: function(error) {
-                    console.log(error);
+                    $('#solverAns').text("Answer: " + response.fraction);
+                    //fractionSolver();
                 }
-            });
-        }
-    }
+        })
+    })
+    $('#fracPracticeButton').on('click', function() {
+        location.href = '/fraction_practice.html';
+    })
 });

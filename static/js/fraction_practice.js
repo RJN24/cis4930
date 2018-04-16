@@ -11,26 +11,41 @@ $(document).ready(function(){
 	$('#easy').on('click', function(){
 		//console.log('easy');
 		limit = 10;
-		$('#select_difficulty').hide();
-		$('#select_operator').show();
-		$('#addition_button').trigger('click');
 		level = "easy";
+		$('#questions').find( "label" ).each(function(elem,index) {
+		   $(this).text(generateEquationsWithAnswers(limit));
+		});
+		$('#fraction_practice').show();
+		$('label').css("background-color", "");
+		$('#questions').trigger("reset");
+		$('#display_results').text("");
+		results_per_level = {};
 	});
 	$('#medium').on('click', function(){
 		//console.log('med');
 		limit = 20;
-		$('#select_difficulty').hide();
-		$('#select_operator').show();
-		$('#addition_button').trigger('click');
 		level = "medium";
+		$('#questions').find( "label" ).each(function(elem,index) {
+		   $(this).text(generateEquationsWithAnswers(limit));
+		});
+		$('#fraction_practice').show();
+		$('label').css("background-color", "");
+		$('#questions').trigger("reset");
+		$('#display_results').text("");
+		results_per_level = {};
 	});
 	$('#hard').on('click', function(){
 		//console.log('hard');
 		limit = 30;
-		$('#select_difficulty').hide();
-		$('#select_operator').show();
-		$('#addition_button').trigger('click');
 		level = "hard";
+		$('#questions').find( "label" ).each(function(elem,index) {
+		   $(this).text(generateEquationsWithAnswers(limit));
+		});
+		$('#fraction_practice').show();
+		$('label').css("background-color", "");
+		$('#questions').trigger("reset");
+		$('#display_results').text("");
+		results_per_level = {};
 		
 	});	
 	
@@ -47,45 +62,6 @@ $(document).ready(function(){
 		results_per_level = {};
 		//console.log(questions);
 
-	});
-	$('#subtraction_button').on('click', function(){
-		questions = {};
-		$('#questions').find( "label" ).each(function(elem,index) {
-		   $(this).text(generateEquationsWithAnswers("-", limit));
-		});
-		$('#fraction_practice').show();
-		operation = "Subtraction";
-		$('label').css("background-color", "");
-		$('#questions').trigger("reset");
-		$('#display_results').text("");
-		results_per_level = {};
-		//console.log(questions);
-	});
-	$('#multiplication_button').on('click', function(){
-		questions = {};
-		$('#questions').find( "label" ).each(function(elem,index) {
-		   $(this).text(generateEquationsWithAnswers("*", limit));
-		});
-		$('#fraction_practice').show();
-		operation = "Multiplication";
-		$('label').css("background-color", "");
-		$('#questions').trigger("reset");
-		$('#display_results').text("");
-		results_per_level = {};
-		//console.log(questions);
-	});
-	$('#division_button').on('click', function(){
-		questions = {};
-		$('#questions').find( "label" ).each(function(elem,index) {
-		   $(this).text(generateEquationsWithAnswers("/", limit));
-		});
-		$('#fraction_practice').show();
-		operation = "Division";
-		$('label').css("background-color", "");
-		$('#questions').trigger("reset");
-		$('#display_results').text("");
-		results_per_level = {};
-		//console.log(questions);
 	});
 	
 	$('#level_button').on('click', function(){
@@ -104,22 +80,34 @@ $(document).ready(function(){
 		}
 	}
 	
-	var operators = {
-    '+': function(a, b, c, d) { return Number(a/b) + Number(c/d) },
-    '-': function(a, b, c, d) { return Number(a/b) - Number(c/d) },
-	'*': function(a, b, c, d) { return Number(a/b) * Number(c/d) },
-	'/': function(a, b, c, d) { return Number(a/b) / Number(c/d) }
-    };
+	function operators(op, a, b, c, d) {
+        if (op == '+') {
+            return Number(a / b) + Number(c / d);
+        }else if (op == '-'){
+            return Number(a/b) - Number(c/d)
+        }else if (op == '*') {
+            return Number(a / b) * Number(c / d);
+        }else {
+            return Number(a / b) / Number(c / d);
+        }
+    }
 	
-	function generateEquationsWithAnswers(op, limit){
+	function generateEquationsWithAnswers(limit){
 		//generate fraction
 		let numerator1 = Math.floor(Math.random() * limit) + 1;
 		let denominator1 = Math.floor(Math.random() * limit) + 1;
 		let numerator2 = Math.floor(Math.random() * limit) + 1;
 		let denominator2 = Math.floor(Math.random() * limit) + 1;
 
+		var op_list = ['+', '-', '*', '/'];
+		console.log(op_list);
+		var randop = Math.floor(Math.random() * 3);
+		console.log(randop);
+		var op = op_list[randop];
+		console.log(op);
+
 		let question = numerator1 + '/' + denominator1 + " " + op + " " + numerator2 + '/' + denominator2;
-		let answer = operators[op](numerator1, denominator1, numerator2, denominator2);
+		let answer = operators(op, numerator1, denominator1, numerator2, denominator2);
 		questions[question] = answer;
 		//console.log(question);
 		return question;

@@ -45,7 +45,7 @@
             <div id='loginDiv' class="col-md-6">
                 <form class="form-signin" id='formLogin' role="form">
                     <h2>Login </h2>
-                    <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus value="">
+                    <input type="username" name="username" class="form-control" placeholder="Username" required autofocus value="">
                     <input type="password" name="password" class="form-control" placeholder="Password" required value="">
                     <span id='errorMessageLogin'></span>
                     <button id="Login" class="btn btn-lg btn-primary btn-block" type="button">Login</button>
@@ -54,7 +54,7 @@
             <div id='registerDiv' class="col-md-6">
                 <form class="form-signin" id='formRegister' role="form">
                     <h2>Register </h2>
-                    <input type="email" name="emailreg" class="form-control" placeholder="Email address" required autofocus>
+                    <input type="username" name="usernamereg" class="form-control" placeholder="Username" required autofocus>
                     <input type="password" name="passwordreg" class="form-control" placeholder="Password" required>
                     <input type="password" name="passwordconfreg" class="form-control" placeholder="Confirm Password" required>
                     <span id='errorMessageReg'></span>
@@ -64,23 +64,48 @@
         </div>
     </div>
     <div id='homeComponent'>
-        <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+        <!--<script src="{{ url_for('static', filename='js/home.js') }}"></script>-->
         <div class="container">
             <div class="row">
-                <h1 id="greeting">Welcome&nbsp;</h1>
+                <h1 id="Dashboardgreeting">Welcome to Fraction Web&nbsp;</h1>
+            </div>
+
+            <div class="'row">
+                <p> Please select from one of the below activities. </p>
             </div>
             <div class="row">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Link</th>
+                            <th><button id="fracSolverButton" class="btn btn-lg btn-primary btn-block" type="button">Fraction Solver</button> </th>
+                            <th><button id="fracPracticeButton" class="btn btn-lg btn-primary btn-block" type="button">Fraction Practice</button> </th>
+                            <th><button id="RedFracButton" class="btn btn-lg btn-primary btn-block" type="button">Fraction Reduction Practice</button> </th>
+                            <th><button id="Results" class="btn btn-lg btn-primary btn-block" type="button">Results</button> </th>
                         </tr>
                     </thead>
-                    <tbody id='eventTableBody'>
+                    <tbody id='LinksTable'>
                     </tbody>
                 </table>
+            </div>
+            <hr width="100%">
+            </div>
+        </div>
+
+    <div id='FracSolverComponent' class="container">
+        <div class='row'>
+            <div id='fracSolverDiv' class="col-md-12">
+                <form class="form-fracInput" id='formFracInput' role="form">
+                    <h4>Below is a fractions calculator. Enter a fraction, followed by one space, then an
+                    operator(* - + /), another space and then another fraction and hit Enter. </h4>
+                    <h6>Example: 1/3 + 1/3 </h6>
+                    <p> </p>
+                    <p> </p>
+                    <input type="frac" name="frac" class="form-control" placeholder="Fraction Operator Fraction" required autofocus value="">
+                    <p> </p>
+                    <button id="EnterFrac" class="btn btn-lg btn-primary btn-block" type="button">Enter</button>
+                    <p></p>
+                    <h5 id='solverAns'></h5>
+                </form>
             </div>
         </div>
     </div>
