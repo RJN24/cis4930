@@ -47,21 +47,6 @@ $(document).ready(function(){
 		$('#display_results').text("");
 		results_per_level = {};
 		
-	});	
-	
-	$('#addition_button').on('click', function(){
-		questions = {};
-		$('#questions').find( "label" ).each(function(elem,index) {
-		   $(this).text(generateEquationsWithAnswers("+", limit));
-		});
-		$('#fraction_practice').show();
-		operation = "Addition";
-		$('label').css("background-color", "");
-		$('#questions').trigger("reset");
-		$('#display_results').text("");
-		results_per_level = {};
-		//console.log(questions);
-
 	});
 	
 	$('#level_button').on('click', function(){
@@ -99,11 +84,11 @@ $(document).ready(function(){
 		let numerator2 = Math.floor(Math.random() * limit) + 1;
 		let denominator2 = Math.floor(Math.random() * limit) + 1;
 
-		var op_list = ['+', '-', '*', '/'];
+		let op_list = ['+', '-', '*', '/'];
 		console.log(op_list);
-		var randop = Math.floor(Math.random() * 3);
+		let randop = Math.floor(Math.random() * 4);
 		console.log(randop);
-		var op = op_list[randop];
+		let op = op_list[randop];
 		console.log(op);
 
 		let question = numerator1 + '/' + denominator1 + " " + op + " " + numerator2 + '/' + denominator2;
