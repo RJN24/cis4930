@@ -75,7 +75,7 @@ def login():
         return jsonify({
             'auth': True,
             'user': {
-                "username": user_id
+                "uid": user_id
             }
         })
     else:
@@ -156,48 +156,49 @@ def results():
     for key, value in data.items():
         print(key, '\t', value)
 
-    # con = sql.connect("users.db")
-    # cur = con.cursor()
-    #
-    # if key == "easy":
-    #     cur.execute("SELECT lv1_correct FROM users WHERE user_id = ?", (uid,))
-    #     correct = cur.fetchone()
-    #     cur.execute("SELECT lv1_total FROM users WHERE user_id = ?", (uid,))
-    #     total = cur.fetchone()
-    #     cur.execute(
-    #         "UPDATE users SET lv1_correct = {amt} WHERE {idf} = ?".format(amt=correct[0] + , idf="user_id"),
-    #         (uid,))
-    #     con.commit()
-    #     cur.execute("UPDATE users SET lv1_total = {amt} WHERE {idf} = ?".format(amt=total[0] + 10, idf="user_id"),
-    #                 (uid,))
-    #     con.commit()
-    #
-    # elif key == "medium":
-    #     cur.execute("SELECT lv2_correct FROM users WHERE user_id = ?", (uid,))
-    #     correct = cur.fetchone()
-    #     cur.execute("SELECT lv2_total FROM users WHERE user_id = ?", (uid,))
-    #     total = cur.fetchone()
-    #     cur.execute(
-    #         "UPDATE users SET lv2_correct = {amt} WHERE {idf} = ?".format(amt=correct[0] + result, idf="user_id"),
-    #         (uid,))
-    #     con.commit()
-    #     cur.execute("UPDATE users SET lv2_total = {amt} WHERE {idf} = ?".format(amt=total[0] + 10, idf="user_id"),
-    #                 (uid,))
-    #     con.commit()
-    #
-    # elif key == "hard":
-    #     cur.execute("SELECT lv3_correct FROM users WHERE user_id = ?", (uid,))
-    #     correct = cur.fetchone()
-    #     cur.execute("SELECT lv3_total FROM users WHERE user_id = ?", (uid,))
-    #     total = cur.fetchone()
-    #     cur.execute(
-    #         "UPDATE users SET lv3_correct = {amt} WHERE {idf} = ?".format(amt=correct[0] + result, idf="user_id"),
-    #         (uid,))
-    #     con.commit()
-    #     cur.execute("UPDATE users SET lv3_total = {amt} WHERE {idf} = ?".format(amt=total[0] + 10, idf="user_id"),
-    #                 (uid,))
-    #     con.commit()
+    con = sql.connect("users.db")
+    cur = con.cursor()
 
+    if data["Level"] == "easy":
+        cur.execute("SELECT lv1_correct FROM users WHERE username = ?", (data["User"],))
+        correct = cur.fetchone()
+        cur.execute("SELECT lv1_total FROM users WHERE username = ?", (data["User"],))
+        total = cur.fetchone()
+        cur.execute(
+            "UPDATE users SET lv1_correct = {amt} WHERE {idf} = ?".format(amt=correct[0] + int(data["Correct"]), idf="username"),
+            (data["User"],))
+        con.commit()
+        cur.execute("UPDATE users SET lv1_total = {amt} WHERE {idf} = ?".format(amt=total[0] + 10, idf="username"),
+                    (data["User"],))
+        con.commit()
+
+    elif data["Level"] == "medium":
+        cur.execute("SELECT lv2_correct FROM users WHERE username = ?", (data["User"],))
+        correct = cur.fetchone()
+        cur.execute("SELECT lv2_total FROM users WHERE username = ?", (data["User"],))
+        total = cur.fetchone()
+        cur.execute(
+            "UPDATE users SET lv2_correct = {amt} WHERE {idf} = ?".format(amt=correct[0] + int(data["Correct"]), idf="username"),
+            (data["User"],))
+        con.commit()
+        cur.execute("UPDATE users SET lv2_total = {amt} WHERE {idf} = ?".format(amt=total[0] + 10, idf="username"),
+                    (data["User"],))
+        con.commit()
+
+    elif data["Level"] == "hard":
+        cur.execute("SELECT lv3_correct FROM users WHERE username = ?", (data["User"],))
+        correct = cur.fetchone()
+        cur.execute("SELECT lv3_total FROM users WHERE username = ?", (data["User"],))
+        total = cur.fetchone()
+        cur.execute(
+            "UPDATE users SET lv3_correct = {amt} WHERE {idf} = ?".format(amt=correct[0] + int(data["Correct"]), idf="username"),
+            (data["User"],))
+        con.commit()
+        cur.execute("UPDATE users SET lv3_total = {amt} WHERE {idf} = ?".format(amt=total[0] + 10, idf="username"),
+                    (data["User"],))
+        con.commit()
+
+    print("Adding {amt} to user {usr} for level {lvl}".format(amt = data["Correct"], usr = data["User"], lvl = data["Level"]))
 
     return jsonify({
         'registered': True

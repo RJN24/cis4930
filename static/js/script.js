@@ -9,6 +9,8 @@ $(document).ready(function(){
             success: function(response) {
                 console.log(response);
                 if(response.auth === true){
+                    $('#loggedUser').val(response.user.uid);
+                    console.log(document.getElementById('loggedUser').value);
                     localStorage.setItem('userdata', JSON.stringify(response.user));
                     if($( '#loginComponent' ).is(":visible")){
                         $('#loginComponent').hide();
@@ -70,6 +72,6 @@ $(document).ready(function(){
         })
     })
     $('#fracPracticeButton').on('click', function() {
-        location.href = '/fraction_practice.html';
+        location.href = '/fraction_practice.html' + '#' + document.getElementById('loggedUser').value;
     })
 });

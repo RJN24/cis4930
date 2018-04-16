@@ -137,11 +137,13 @@ $(document).ready(function(){
 			
 		});
 
-
-		final_results[level] = numCorrect;
+        let user = JSON.parse(localStorage.getItem('userdata'));
+        let uid = user.uid;
+        console.log(uid);
+		let final_results = {"User": String(uid), "Level": level, "Correct": numCorrect};
 
         console.log(final_results);
-        $('#display_results').text("Level " + level + " : " + numCorrect + "/10 correct");
+        $('#display_results').text(numCorrect + "/10 for level: " + level);
 		$.ajax({
             url: '/results',
 			data: JSON.stringify(final_results),
