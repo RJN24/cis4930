@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+ <html lang="en">
+ 
+ <head>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="description" content="">
+     <meta name="author" content="">
+     <!-- <link rel="icon" href="../../favicon.ico"> -->
+     <title>Flask Template </title>
+     <!-- Bootstrap core CSS -->
+     <link href="{{ url_for('static', filename='styles/bootstrap.min.css') }}" rel="stylesheet">
+     <!-- Font Style import -->
+     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+     <!-- Custom styles for this template -->
+     <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
+     <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+     <script src="{{ url_for('static', filename='js/fraction_practice.js') }}"></script>
+
+	 <script type="text/javascript" src="math.min.js"></script>
+ </head>
+ 
+ <body>
+    <nav class="navbar  navbar-dark bg-primary navbar-fixed-top navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">Navbar</a>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/reduction_practice.html">Link</a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+	<div class="container">
+	<br/>
+		<div id='select_difficulty' class='row'>
+			<div class="col">
+			<h1>Select a Difficulty</h1>
+			<br/>
+			<div class="btn-group">
+					<button id="easy" class="btn btn-lg btn-primary" type="button">Easy</button>
+					<button id="medium" class="btn btn-lg btn-primary" type="button">Medium</button> 
+					<button id="hard" class="btn btn-lg btn-primary" type="button">Hard</button>
+			</div>
+			</div>
+		</div>
+		<div id="select_operator" class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+			<div class="btn-group" >
+					<button id="addition_button" class="btn btn-lg btn-primary" type="button">Addition</button>
+					<button id="subtraction_button" class="btn btn-lg btn-primary" type="button">Subtraction</button> 
+					<button id="multiplication_button" class="btn btn-lg btn-primary" type="button">Multiplication</button>
+					<button id="division_button" class="btn btn-lg btn-primary " type="button">Division</button>
+			</div>
+			<div>
+				<button id="level_button" class="btn btn-lg btn-primary " type="button">Change Level</button>
+			</div>
+		</div>
+	
+		<div id='fraction_practice' class='row'>
+			<div class="col">
+				<h1>Answer The Following Questions</h1>
+				<h4>Press enter to submit. Can enter whole numbers if applicable. </h4>
+				<span id='display_results'></span>
+				<form id='questions' role="form">
+					<label id="question1" for="answer1">question here</label><br/>
+					<input id="answer1" name= "answer1" class="form-control" type="text">
+			
+					<label id="question2" for="answer2">question here</label><br/>
+					<input id="answer2" name= "answer2" class="form-control" type="text">
+				<!--
+					<label id="question3" for="answer3">question here</label><br/>
+					<input id="answer3" name= "answer3" class="form-control" type="text">
+					
+					<label id="question4" for="answer4">question here</label><br/>
+					<input id="answer4" name= "answer4" class="form-control" type="text">
+					
+					<label id="question5" for="answer5">question here</label><br/>
+					<input id="answer5"  name= "answer5" class="form-control" type="text">
+					
+					<label id="question6" for="answer6">question here</label><br/>
+					<input id="answer6" name= "answer6" class="form-control" type="text">
+					
+					<label id="question7" for="answer7">question here</label><br/>
+					<input id="answer7" name= "answer7" class="form-control" type="text">
+					
+					<label id="question8" for="answer8">question here</label><br/>
+					<input id="answer8" name= "answer8" class="form-control" type="text">
+					
+					<label id="question9" for="answer9">question here</label><br/>
+					<input id="answer9" name= "answer9" class="form-control" type="text">
+					
+					<label id="question10" for="answer10">question here</label><br/>
+					<input id="answer10" name= "answer10" class="form-control" type="text">   -->
+					<button id="save" class="btn btn-lg btn-primary btn-block" type="button">Submit</button>
+				</form>
+				
+				
+				<span id='feedback'></span>
+			</div>
+		</div>
+		
+
+	</div>
+
+  
+ </body>
+ 
+ </html>
