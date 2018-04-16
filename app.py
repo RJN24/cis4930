@@ -198,10 +198,20 @@ def results():
                     (data["User"],))
         con.commit()
 
+    else:
+        print("Unable to store results in database.")
+        cur.close()
+        con.close()
+        return jsonify({
+            'registered': False
+        })
+
+
     print("Adding {amt} to user {usr} for level {lvl}".format(amt = data["Correct"], usr = data["User"], lvl = data["Level"]))
 
     cur.close()
     con.close()
+
     
     return jsonify({
         'registered': True
