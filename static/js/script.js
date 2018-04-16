@@ -26,7 +26,7 @@ $(document).ready(function(){
 
                 }else{
                     alert("false");
-                    $('#errorMessageLogin').text('Incorrect email and/or password.')
+                    $('#errorMessageLogin').text('Incorrect username and/or password.')
                 }
             },
             error: function(error) {
@@ -94,7 +94,7 @@ $(document).ready(function(){
     $('#EventSubmit').on('click', function() {
         let user = JSON.parse(localStorage.getItem('userdata'));
         let tempForm = {
-            email: user.email,
+            username: user.username,
             eventName: $('#eventName').val(),
             eventTime: $('#eventTime').val(),
             eventUrl: $('#eventUrl').val()
@@ -126,7 +126,7 @@ $(document).ready(function(){
     function populateUser(){
         let user = JSON.parse(localStorage.getItem('userdata'));
         console.log(user)
-        $('#greeting').append(user.firstName)
+        $('#greeting').append(user.username)
     }
 
     function getTable(){
@@ -134,12 +134,12 @@ $(document).ready(function(){
         let parseduser;
         if (tempuser) {
             parseduser = JSON.parse(tempuser);
-            let email = parseduser.email;
-            console.log(email)
+            let username = parseduser.username;
+            console.log(username)
             $.ajax({
                 url: '/getEvents',
                 data: {
-                    temp: email
+                    temp: username
                 },
                 contentType: 'application/json',
                 dataType: 'json',
