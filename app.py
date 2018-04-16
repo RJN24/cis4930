@@ -8,7 +8,7 @@ app = Flask(__name__, template_folder='static')
 app.config["DEBUG"] = True
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run(port=3000)
 
 USERS_TABLE = """ CREATE TABLE IF NOT EXISTS users (
                                 id TEXT PRIMARY KEY,
@@ -28,11 +28,22 @@ EVENT_TABLE = """ CREATE TABLE IF NOT EXISTS event(
                                 eventTime TEXT, 
                                 eventUrl TEXT); """
 
-
 # Route for /
 @app.route("/")
 def hello():
     return render_template('/index.html')
+
+
+# Route for reduction practice
+@app.route("/reduction_practice.html")
+def reduction_practice():
+    return render_template('/reduction_practice.html')
+
+
+# Route for fraction practice
+@app.route("/fraction_practice.html")
+def fraction_practice():
+    return render_template('/fraction_practice.html')
 
 
 # Make SQL cursor return dictionary
@@ -43,7 +54,7 @@ def dict_factory(cursor, row):
     return d
 
 
-# Post request method for /login GETS USER INPUT
+# Post request method for /login
 @app.route('/login', methods=['POST'])
 def login():
     user_id = request.form['username'];
@@ -55,7 +66,7 @@ def login():
     cur.execute("SELECT * FROM users WHERE username=?", (user_id,))
     temp = cur.fetchone()
     cur.close()
-    print("Trying to login as " + user_id)
+    print(temp)
     if temp is None:
         return jsonify({
             'auth': False
@@ -64,7 +75,7 @@ def login():
         return jsonify({
             'auth': True,
             'user': {
-                "username": user_id
+                "uid": user_id
             }
         })
     else:
@@ -73,7 +84,7 @@ def login():
         })
 
 
-# Post request method for /register GETS USER INPUT
+# Post request method for /register
 @app.route('/register', methods=['POST'])
 def register():
     try:
@@ -114,7 +125,7 @@ def register():
         print(e)
 
 
-# Returns user's events RETURNS TO SCREEN
+# Returns user's events
 @app.route('/getEvents', methods=['GET'])
 def home():
     # Print json from get request
@@ -136,25 +147,61 @@ def home():
     });
 
 
-# GETS USER INPUT
-@app.route('/newEvent', methods=['POST'])
-def newEvent():
-    user_id = request.form['username']
-    eventName = request.form['eventName'];
-    eventTime = request.form['eventTime'];
-    eventUrl = request.form['eventUrl'];
-    con = sql.connect("users.db", timeout=10)
-    con.row_factory = dict_factory
+@app.route('/results', methods=['POST'])
+def results():
+    print('hello from results')
+    data = request.json
+
+    # print(data)
+    for key, value in data.items():
+        print(key, '\t', value)
+
+    con = sql.connect("users.db")
     cur = con.cursor()
-    cur.execute(EVENT_TABLE)
-    uid = str(uuid.uuid4())
-    cur.execute("""INSERT INTO event(id, username, eventName, eventTime, eventUrl) VALUES (?,?,?,?,?);""",
-                (uid, user_id, eventName, eventTime, eventUrl))
-    con.commit()
-    cur.close()
-    con.close()
+
+    if data["Level"] == "easy":
+        cur.execute("SELECT lv1_correct FROM users WHERE username = ?", (data["User"],))
+        correct = cur.fetchone()
+        cur.execute("SELECT lv1_total FROM users WHERE username = ?", (data["User"],))
+        total = cur.fetchone()
+        cur.execute(
+            "UPDATE users SET lv1_correct = {amt} WHERE {idf} = ?".format(amt=correct[0] + int(data["Correct"]), idf="username"),
+            (data["User"],))
+        con.commit()
+        cur.execute("UPDATE users SET lv1_total = {amt} WHERE {idf} = ?".format(amt=total[0] + 10, idf="username"),
+                    (data["User"],))
+        con.commit()
+
+    elif data["Level"] == "medium":
+        cur.execute("SELECT lv2_correct FROM users WHERE username = ?", (data["User"],))
+        correct = cur.fetchone()
+        cur.execute("SELECT lv2_total FROM users WHERE username = ?", (data["User"],))
+        total = cur.fetchone()
+        cur.execute(
+            "UPDATE users SET lv2_correct = {amt} WHERE {idf} = ?".format(amt=correct[0] + int(data["Correct"]), idf="username"),
+            (data["User"],))
+        con.commit()
+        cur.execute("UPDATE users SET lv2_total = {amt} WHERE {idf} = ?".format(amt=total[0] + 10, idf="username"),
+                    (data["User"],))
+        con.commit()
+
+    elif data["Level"] == "hard":
+        cur.execute("SELECT lv3_correct FROM users WHERE username = ?", (data["User"],))
+        correct = cur.fetchone()
+        cur.execute("SELECT lv3_total FROM users WHERE username = ?", (data["User"],))
+        total = cur.fetchone()
+        cur.execute(
+            "UPDATE users SET lv3_correct = {amt} WHERE {idf} = ?".format(amt=correct[0] + int(data["Correct"]), idf="username"),
+            (data["User"],))
+        con.commit()
+        cur.execute("UPDATE users SET lv3_total = {amt} WHERE {idf} = ?".format(amt=total[0] + 10, idf="username"),
+                    (data["User"],))
+        con.commit()
+
+    print("Adding {amt} to user {usr} for level {lvl}".format(amt = data["Correct"], usr = data["User"], lvl = data["Level"]))
+
     return jsonify({
-        'newEventStatus': True
+        'registered': True
     })
 
 
@@ -218,5 +265,4 @@ def fractionSolver():
     return jsonify({
         'fraction': R.__str__()})
 
-# @app.route('/getAverage', methods=['GET'])
-# def getUserAverage
+
