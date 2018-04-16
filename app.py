@@ -200,6 +200,9 @@ def results():
 
     print("Adding {amt} to user {usr} for level {lvl}".format(amt = data["Correct"], usr = data["User"], lvl = data["Level"]))
 
+    cur.close()
+    con.close()
+    
     return jsonify({
         'registered': True
     })
