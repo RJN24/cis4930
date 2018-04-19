@@ -45,6 +45,10 @@ def reduction_practice():
 def fraction_practice():
     return render_template('/fraction_practice.html')
 
+# Route for Home Page
+@app.route("/home.html")
+def myHome():
+    return render_template('/home.html')
 
 # Make SQL cursor return dictionary
 def dict_factory(cursor, row):
@@ -123,7 +127,6 @@ def register():
             })
     except KeyError as e:
         print(e)
-
 
 # Returns user's events
 @app.route('/getEvents', methods=['GET'])
@@ -218,7 +221,7 @@ def results():
     })
 
 
-@app.route('/fracSolver', methods=['POST'])
+@app.route('/home.html/fracSolver', methods=['POST'])
 def fractionSolver():
     fraction = request.form['frac']
     patt2 = r'(-?\d+)\/?(-?\d+)?\s+([*\-+/])\s+(-?\d+)\/?(-?\d+)?'
