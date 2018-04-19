@@ -45,6 +45,10 @@ def reduction_practice():
 def fraction_practice():
     return render_template('/fraction_practice.html')
 
+# Route for results
+@app.route("/results_chart.html")
+def results_chart():
+    return render_template('/results_chart.html')
 
 # Make SQL cursor return dictionary
 def dict_factory(cursor, row):
@@ -212,7 +216,7 @@ def results():
     cur.close()
     con.close()
 
-    
+
     return jsonify({
         'registered': True
     })
@@ -277,5 +281,3 @@ def fractionSolver():
 
     return jsonify({
         'fraction': R.__str__()})
-
-
