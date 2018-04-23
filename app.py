@@ -128,29 +128,8 @@ def register():
     except KeyError as e:
         print(e)
 
-# Returns user's events
-@app.route('/getEvents', methods=['GET'])
-def home():
-    # Print json from get request
-    print(request.args)
-    user_id = request.args.get("temp");
-    print(user_id)
-    con = sql.connect("users.db")
-    con.row_factory = dict_factory
-    cur = con.cursor()
-    cur.execute(EVENT_TABLE)
-    cur.execute("SELECT * FROM event WHERE username=?", (user_id,))
-    eventdata = cur.fetchall()
-    print(eventdata)
-    con.commit()
-    cur.close()
-    con.close()
-    return jsonify({
-        'events': eventdata
-    });
 
-
-@app.route('/results', methods=['POST'])
+@app.route('/post_results', methods=['POST'])
 def results():
     print('hello from results')
     data = request.json
@@ -219,6 +198,75 @@ def results():
     return jsonify({
         'registered': True
     })
+
+@app.route('/get_results', methods=['GET'])
+def getResults():
+    data = request.json
+    user = data['User']
+    con = sql.connect('users.db')
+    cur = con.cursor()
+    cur.execute("SELECT (lv1_correct, lv1_total, lv2_correct, lv2_total, lv3_correct, lv3_total) FROM users WHERE username=?", (user,))
+    user_info = cur.fetchall()
+    lv1_correct = user_info[0]
+    lv1_total = user_info[1]
+    lv1_average = int(lv1_correct)/int(lv1_total)
+
+    cur.execute("SELECT lv1_correct FROM users")
+    get_all_lv1_correct = cur.fetchall()
+    lv1_total_correct = 0
+    for i in get_all_lv1_correct:
+        lv1_total_correct += int(i)
+    cur.execute("SELECT lv1_total FROM users")
+    get_all_lv1_total = cur.fetchall()
+    lv1_total_total = 0
+    for i in get_all_lv1_total:
+        lv1_total_total += int(i)
+    lv1_total_average = lv1_total_correct/lv1_total_total
+
+    lv2_correct = user_info[2]
+    lv2_total = user_info[3]
+    lv2_average = int(lv2_correct) / int(lv2_total)
+
+    cur.execute("SELECT lv2_correct FROM users")
+    get_all_lv2_correct = cur.fetchall()
+    lv2_total_correct = 0
+    for i in get_all_lv2_correct:
+        lv2_total_correct += int(i)
+    cur.execute("SELECT lv2_total FROM users")
+    get_all_lv2_total = cur.fetchall()
+    lv2_total_total = 0
+    for i in get_all_lv2_total:
+        lv2_total_total += int(i)
+    lv2_total_average = lv2_total_correct / lv2_total_total
+
+    lv3_correct = user_info[4]
+    lv3_total = user_info[5]
+    lv3_average = int(lv3_correct) / int(lv3_total)
+
+    cur.execute("SELECT lv3_correct FROM users")
+    get_all_lv3_correct = cur.fetchall()
+    lv3_total_correct = 0
+    for i in get_all_lv3_correct:
+        lv3_total_correct += int(i)
+    cur.execute("SELECT lv3_total FROM users")
+    get_all_lv3_total = cur.fetchall()
+    lv3_total_total = 0
+    for i in get_all_lv3_total:
+        lv3_total_total += int(i)
+    lv3_total_average = lv3_total_correct / lv3_total_total
+
+    cur.close()
+    con.close()
+    return jsonify({
+        'user_level_1_average': lv1_average,
+        'user_level_2_average': lv2_average,
+        'user_level_3_average': lv3_average,
+        'all_level_1_average': lv1_total_average,
+        'all_level_2_average': lv2_total_average,
+        'all_level_3_average': lv3_total_average
+    })
+
+
 
 
 @app.route('/home.html/fracSolver', methods=['POST'])
