@@ -1,6 +1,5 @@
 $(document).ready(function(){
     $('#FracSolverComponent').hide();
-    $('#homeComponent').hide();
     $('#Login').on('click', function() {
         $.ajax({
             url: '/login',
@@ -15,13 +14,13 @@ $(document).ready(function(){
                     if($( '#loginComponent' ).is(":visible")){
                         $('#loginComponent').hide();
                         $('#FracSolverComponent').hide();
-
-                        $('#homeComponent').show();
+                        location.href = '/home.html' + '#' + document.getElementById('loggedUser').value;
                     }
 
                     else{
                         $('#homeComponent').show();
                         $('#FracSolverComponent').hide();
+                        location.href = '/home.html' + '#' + document.getElementById('loggedUser').value;
                     }
 
                 }else{
@@ -74,4 +73,6 @@ $(document).ready(function(){
     $('#fracPracticeButton').on('click', function() {
         location.href = '/fraction_practice.html' + '#' + document.getElementById('loggedUser').value;
     })
+
+
 });
