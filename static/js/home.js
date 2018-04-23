@@ -29,22 +29,25 @@ $(document).ready(function(){
     });
 
     $('#Results').on('click', function() {
-        location.href = '/results';
-        let user = JSON.parse(localStorage.getItem('userdata'));
+        let data = JSON.parse(localStorage.getItem('userdata'));
+        let user = {"User": String(data.uid)};
+        console.log(user);
         $.ajax({
-            url: '/get_results',
-            data: JSON.stringify(user),
-            type: 'GET',
-            contentType: 'application/json',
-            dataType: 'json',
+            url: '/get_stats',
+			data: JSON.stringify(user),
+            type: 'POST',
+			contentType: "application/json",
+			dataType: "json",
             success: function(response) {
                 console.log('submitted');
+                console.log(response)
             },
             error: function(error) {
-                console.log('ERROR');
-                console.log(error)
+				console.log('ERROR');
+				console.log(error);
             }
         });
+        //location.href = '/static/results.html';
     });
 
     $('#logout').on('click', function() {
