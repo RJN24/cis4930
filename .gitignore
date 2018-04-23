@@ -103,3 +103,4 @@ ENV/
 .idea
 .db
 __pycache__/app.cpython-36.pyc
+*.db
