@@ -47,7 +47,7 @@ $(document).ready(function(){
 				console.log(error);
             }
         });
-        //location.href = '/static/results.html';
+        location.href = '/static/results.html';
     });
 
     $('#logout').on('click', function() {

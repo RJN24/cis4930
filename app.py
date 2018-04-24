@@ -43,9 +43,14 @@ def fraction_practice():
 def myHome():
     return render_template('/home.html')
 
-@app.route("/results.html")
+
+# @app.route("/results.html")
+# def results():
+#     return render_template('/results.html')
+
+@app.route("/results_chart.html")
 def results():
-    return render_template('/results.html')
+    return render_template('/results_chart.html')
 
 # Make SQL cursor return dictionary
 def dict_factory(cursor, row):
@@ -201,7 +206,8 @@ def get_stats():
     # Parse JSON to get logged in user
     # Create new connection to SQLite3 db
     # Pull level data for logged in user
-    data = request.json
+    data = request.json #Data is printing none
+    print(data)
     user = data['User']
     con = sql.connect('users.db')
     cur = con.cursor()
