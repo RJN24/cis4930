@@ -206,8 +206,7 @@ def get_stats():
     # Parse JSON to get logged in user
     # Create new connection to SQLite3 db
     # Pull level data for logged in user
-    data = request.json #Data is printing none
-    print(data)
+    data = request.json
     user = data['User']
     con = sql.connect('users.db')
     cur = con.cursor()
