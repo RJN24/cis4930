@@ -196,6 +196,7 @@ def post_results():
     cur.close()
     con.close()
 
+
     return jsonify({
         'registered': True
     })
@@ -373,5 +374,3 @@ def fractionSolver():
 
     return jsonify({
         'fraction': R.__str__()})
-
-
