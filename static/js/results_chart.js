@@ -44,6 +44,6 @@ $(document).ready(function(){
 		}
 	});
 
-        $('#results-chart').text("Results for User: " + String(data.uid));
+        $('#results-chart').text("Here are your results so far, " + String(data.uid) + ". Keep up the good work!");
 
 });
