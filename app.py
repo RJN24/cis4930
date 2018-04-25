@@ -21,13 +21,6 @@ USERS_TABLE = """ CREATE TABLE IF NOT EXISTS users (
                                 lv3_correct INTEGER DEFAULT 0,
                                 lv3_total INTEGER DEFAULT 0); """
 
-EVENT_TABLE = """ CREATE TABLE IF NOT EXISTS event(
-                                id TEXT PRIMARY_KEY, 
-                                username TEXT, 
-                                eventName TEXT, 
-                                eventTime TEXT, 
-                                eventUrl TEXT); """
-
 # Route for /
 @app.route("/")
 def hello():
@@ -49,6 +42,15 @@ def fraction_practice():
 @app.route("/home.html")
 def myHome():
     return render_template('/home.html')
+
+
+# @app.route("/results.html")
+# def results():
+#     return render_template('/results.html')
+
+@app.route("/results_chart.html")
+def results():
+    return render_template('/results_chart.html')
 
 # Make SQL cursor return dictionary
 def dict_factory(cursor, row):
@@ -128,30 +130,9 @@ def register():
     except KeyError as e:
         print(e)
 
-# Returns user's events
-@app.route('/getEvents', methods=['GET'])
-def home():
-    # Print json from get request
-    print(request.args)
-    user_id = request.args.get("temp");
-    print(user_id)
-    con = sql.connect("users.db")
-    con.row_factory = dict_factory
-    cur = con.cursor()
-    cur.execute(EVENT_TABLE)
-    cur.execute("SELECT * FROM event WHERE username=?", (user_id,))
-    eventdata = cur.fetchall()
-    print(eventdata)
-    con.commit()
-    cur.close()
-    con.close()
-    return jsonify({
-        'events': eventdata
-    });
 
-
-@app.route('/results', methods=['POST'])
-def results():
+@app.route('/post_results', methods=['POST'])
+def post_results():
     print('hello from results')
     data = request.json
 
@@ -218,6 +199,119 @@ def results():
 
     return jsonify({
         'registered': True
+    })
+
+
+@app.route('/get_stats', methods=['GET','POST'])
+def get_stats():
+    # Parse JSON to get logged in user
+    # Create new connection to SQLite3 db
+    # Pull level data for logged in user
+    data = request.json
+    user = data['User']
+    con = sql.connect('users.db')
+    cur = con.cursor()
+    cur.execute("SELECT lv1_correct, lv1_total, lv2_correct, lv2_total, lv3_correct, lv3_total FROM users WHERE username=?", (user,))
+    user_info = cur.fetchall()
+    print(user_info)
+
+    # Get users average for level 1
+    lv1_correct = user_info[0][0]
+    print(lv1_correct)
+    lv1_total = user_info[0][1]
+    if lv1_total == 0:
+        lv1_average = 0
+    else:
+        lv1_average = int(lv1_correct)/int(lv1_total)
+    print(lv1_average)
+
+    # Get global average for level 1
+    cur.execute("SELECT lv1_correct FROM users")
+    get_all_lv1_correct = cur.fetchall()
+    print(get_all_lv1_correct)
+    lv1_total_correct = 0
+    for i in range(len(get_all_lv1_correct)):
+        lv1_total_correct += get_all_lv1_correct[i][0]
+    print(lv1_total_correct)
+    cur.execute("SELECT lv1_total FROM users")
+    get_all_lv1_total = cur.fetchall()
+    lv1_total_total = 0
+    for i in range(len(get_all_lv1_total)):
+        lv1_total_total += get_all_lv1_total[i][0]
+    print("Printing total for level 1")
+    print(lv1_total_total)
+    if lv1_total_total == 0:
+        lv1_total_average = 0
+    else:
+        lv1_total_average = int(lv1_total_correct)/int(lv1_total_total)
+    print(lv1_total_average)
+
+    # Get user average for level 2
+    lv2_correct = user_info[0][2]
+    lv2_total = user_info[0][3]
+    if lv2_total == 0:
+        lv2_average = 0
+    else:
+        lv2_average = int(lv2_correct) / int(lv2_total)
+
+    # Get global average for level 2
+    cur.execute("SELECT lv2_correct FROM users")
+    get_all_lv2_correct = cur.fetchall()
+    print(get_all_lv2_correct)
+    lv2_total_correct = 0
+    for i in range(len(get_all_lv2_correct)):
+        lv2_total_correct += get_all_lv2_correct[i][0]
+    print(lv2_total_correct)
+    cur.execute("SELECT lv2_total FROM users")
+    get_all_lv2_total = cur.fetchall()
+    lv2_total_total = 0
+    for i in range(len(get_all_lv2_total)):
+        lv2_total_total += get_all_lv2_total[i][0]
+    if lv2_total_total == 0:
+        lv2_total_average = 0
+    else:
+        lv2_total_average = int(lv2_total_correct)/int(lv2_total_total)
+    print(lv2_total_average)
+
+    # Get user average for level 3
+    lv3_correct = user_info[0][4]
+    lv3_total = user_info[0][5]
+    if lv3_total == 0:
+        lv3_average = 0
+    else:
+        lv3_average = int(lv3_correct) / int(lv3_total)
+
+    # Get global average for level 3
+    cur.execute("SELECT lv3_correct FROM users")
+    get_all_lv3_correct = cur.fetchall()
+    print(get_all_lv3_correct)
+    lv3_total_correct = 0
+    for i in range(len(get_all_lv3_correct)):
+        lv3_total_correct += get_all_lv3_correct[i][0]
+    print(lv3_total_correct)
+    cur.execute("SELECT lv3_total FROM users")
+    get_all_lv3_total = cur.fetchall()
+    lv3_total_total = 0
+    for i in range(len(get_all_lv3_total)):
+        lv3_total_total += get_all_lv3_total[i][0]
+    if lv3_total_total == 0:
+        lv3_total_average = 0
+    else:
+        lv3_total_average = int(lv3_total_correct)/int(lv3_total_total)
+    print(lv3_total_average)
+
+    # Close connections
+    cur.close()
+    con.close()
+
+    # Return JSON data
+    return jsonify({
+        'user_level_1_average': lv1_average,
+        'user_level_2_average': lv2_average,
+        'user_level_3_average': lv3_average,
+        'all_level_1_average': lv1_total_average,
+        'all_level_2_average': lv2_total_average,
+        'all_level_3_average': lv3_total_average
     })
 
 

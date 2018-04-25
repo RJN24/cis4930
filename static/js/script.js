@@ -55,7 +55,7 @@ $(document).ready(function(){
     $('#fracSolverButton').on('click', function() {
         $('#homeComponent').show();
         $('#FracSolverComponent').show();
-    })
+    });
 
     $('#EnterFrac').on('click', function() {
         $.ajax({
@@ -69,10 +69,10 @@ $(document).ready(function(){
                     //fractionSolver();
                 }
         })
-    })
+    });
+
     $('#fracPracticeButton').on('click', function() {
         location.href = '/fraction_practice.html' + '#' + document.getElementById('loggedUser').value;
-    })
-
+    });
 
 });
