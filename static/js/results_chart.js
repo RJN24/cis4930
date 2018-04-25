@@ -21,14 +21,14 @@ $(document).ready(function(){
 						borderColor: 'rgba(200, 200, 200, 0.75)',
 						hoverBackgroundColor: 'rgba(12, 88, 252, 0.07)',
 						hoverBorderColor: 'rgba(200, 200, 200, 1)',
-						data: [scores.user_level_1_average, scores.user_level_2_average, scores.user_level_3_average]
+						data: [(scores.user_level_1_average *100) , (scores.user_level_2_average*100), (scores.user_level_3_average*100)]
 					},{
                         label: 'Total Average Score',
                         backgroundColor: 'rgba(153,255,51,1)',
 						borderColor: 'rgba(200, 200, 200, 0.75)',
 						hoverBackgroundColor: 'rgba(12, 88, 252, 0.07))',
 						hoverBorderColor: 'rgba(200, 200, 200, 1)',
-						data: [scores.all_level_1_average, scores.all_level_2_average, scores.all_level_3_average]
+						data: [(scores.all_level_1_average*100), (scores.all_level_2_average*100), (scores.all_level_3_average*100)]
 					}
 				]
 			};
