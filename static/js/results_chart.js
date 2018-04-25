@@ -26,12 +26,19 @@ $(document).ready(function(){
 				labels: ['Level 1', 'Level 2', 'Level 3'],
 				datasets : [
 					{
-						label: 'Player Score',
-						backgroundColor: 'rgba(200, 200, 200, 0.75)',
+						label: 'User Average Score',
+						backgroundColor: 'rgba(12, 88, 252, 0.97)',
 						borderColor: 'rgba(200, 200, 200, 0.75)',
-						hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
+						hoverBackgroundColor: 'rgba(12, 88, 252, 0.07)',
 						hoverBorderColor: 'rgba(200, 200, 200, 1)',
 						data: [scores.user_level_1_average, scores.user_level_2_average, scores.user_level_3_average]
+					},{
+                        label: 'Total Average Score',
+                        backgroundColor: 'rgba(153,255,51,1)',
+						borderColor: 'rgba(200, 200, 200, 0.75)',
+						hoverBackgroundColor: 'rgba(12, 88, 252, 0.07))',
+						hoverBorderColor: 'rgba(200, 200, 200, 1)',
+						data: [scores.all_level_1_average, scores.all_level_2_average, scores.all_level_3_average]
 					}
 				]
 			};
@@ -39,8 +46,7 @@ $(document).ready(function(){
 var ctx = document.getElementById('results_chart').getContext('2d');
 var resultsChart = new Chart(ctx, {
   type: 'horizontalBar',
-  data: chartData,
-  backgroundColor: "rgba(80, 228, 251, 0.95)"
+  data: chartData
 		});
 		},
 		error: function(data) {
