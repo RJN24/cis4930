@@ -148,7 +148,7 @@ $(document).ready(function(){
 			try{
 			    user_answer = $(this).val().match(/(-?\d+)(?=\/{1}(-?\d+)|)/).slice(1).map(Number);
             }
-            catch{
+            catch(err){
                 $span.text("*Please enter a fraction or integer for an answer").css("color", "red");
                 submit_form = false;
 			    return;
@@ -190,6 +190,7 @@ $(document).ready(function(){
 		});
 
         if(submit_form != false){
+            $('#display_results').text("For Level " + level + " Number Correct: " + numCorrect + "/10");
             let user = JSON.parse(localStorage.getItem('userdata'));
             let uid = user.uid;
             let final_results = {"User": String(uid), "Level": level, "Correct": numCorrect};
@@ -197,7 +198,7 @@ $(document).ready(function(){
             console.log(final_results);
             $('#display_results').text(numCorrect + "/10 for level: " + level);
             $.ajax({
-                url: '/results',
+                url: '/post_results',
                 data: JSON.stringify(final_results),
                 type: 'POST',
                 contentType: "application/json",
