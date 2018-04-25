@@ -1,13 +1,3 @@
-//function getBarGraphData(){
-// $.get(
-//        'http://localhost:5000/get_stats',
-//        function (data) {
-//            displayBarChart(data)
-//        },
-//        'json'
-//        );
-//}
-
 $(document).ready(function(){
         let data = JSON.parse(localStorage.getItem('userdata'));
         let user = {"User": String(data.uid)};
