@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+ <html lang="en">
+
+ <head>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="description" content="">
+     <meta name="author" content="">
+     <!-- <link rel="icon" href="../../favicon.ico"> -->
+     <title>Flask Template </title>
+     <!-- Bootstrap core CSS -->
+     <link href="{{ url_for('static', filename='styles/bootstrap.min.css') }}" rel="stylesheet">
+     <!-- Font Style import -->
+     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+     <!-- Custom styles for this template -->
+     <link href="{{ url_for('static', filename='styles/results_chart.css') }}" rel="stylesheet">
+     <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+     <script src="{{ url_for('static', filename='js/results_chart.js') }}"></script>
+
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+ </head>
+ <body>
+ <nav class="navbar  navbar-dark bg-primary navbar-fixed-top navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">Navbar</a>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="/home.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+<div class="container">
+  <h2>Results Chart</h2>
+  <div>
+    <canvas id="results_chart"></canvas>
+  </div>
+</div>
+ </body>
+ </html>
