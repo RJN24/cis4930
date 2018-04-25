@@ -145,7 +145,7 @@ $(document).ready(function(){
         console.log(final_results);
         $('#display_results').text(numCorrect + "/10 for level: " + level);
 		$.ajax({
-            url: '/results',
+            url: '/post_results',
 			data: JSON.stringify(final_results),
             type: 'POST',
 			contentType: "application/json",
@@ -155,7 +155,7 @@ $(document).ready(function(){
             },
             error: function(error) {
 				console.log('ERROR');
-                console.log(error);
+				console.log(error);
             }
         });
 		

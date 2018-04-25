@@ -1,0 +1,82 @@
+
+<!--Google API Chart Version-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+     <!-- <link rel="icon" href="../../favicon.ico"> -->
+     <title>Flask Template </title>
+     <!-- Bootstrap core CSS -->
+     <!-- Font Style import -->
+     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+     <!-- Custom styles for this template -->
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+        // Create the data table.
+      function drawChart() {
+       var jsonData = $.ajax({
+          url: "/get_stats",
+          dataType: "json",
+          async: false
+          }).responseText;
+
+        var data = new google.visualization.DataTable(jsonData);
+        <!--data.addColumn('string', 'Scores');-->
+        <!--data.addColumn('number', 'Data');-->
+        <!--data.addRows([-->
+          <!--['Your Score:', 3],-->
+          <!--['Average Score:', 5],-->
+          <!--['Highest Score:', 10],-->
+        <!--]);-->
+
+        // Set chart options
+        var options = {'title':'Fraction Solver Results',
+                       'colors': ['#04edf9', '#07abf7', '#097be5'],
+                       'width':800,
+                       'height':600};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+
+  <body>
+      <nav class="navbar  navbar-dark bg-primary navbar-fixed-top navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">Navbar</a>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/results_chart.html">Link</a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+    <!--Div that will hold the pie chart-->
+    <div id="chart_div"></div>
+
+  </body>
+</html>
