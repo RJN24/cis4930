@@ -18,8 +18,25 @@
      <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
      <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
      <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+     <style>
+         #header {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        margin: 10px;
+      }
+
+      .border {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+      }
+     </style>
  </head>
- 
+ <header>
+</header>
  <body>
     <nav class="navbar  navbar-dark bg-primary navbar-fixed-top navbar-expand-lg">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,11 +47,20 @@
             </ul>
         </div>
     </nav>
-    <div id='loginComponent' class="container">
+    <div id='loginComponent' class="container" class="col-md-12">
+        <div class="row">
+         <img id="header" src="{{ url_for('static', filename='headerNew.jpg') }}" align="center" hspace="20">
+        </div>
+        <div class="row">
+            <p class='border'>&nbsp</p>
+            <h4> Fraction Web is designed to help children master their fraction skill. By Signing in you can practice doing operations with fractions, practice reducing fractions and even use our fraction solver to get answers to fraction problems.</h4>
+            <p class="border">&nbsp</p>
+        </div>
         <div class='row'>
             <div id='loginDiv' class="col-md-6">
                 <form class="form-signin" id='formLogin' role="form">
-                    <h2>Login </h2>
+                    <h2>Returning User? Sign In. </h2>
+                    <p class="border">&nbsp</p>
                     <input type="username" name="username" class="form-control" placeholder="Username" required autofocus value="">
                     <input type="password" name="password" class="form-control" placeholder="Password" required value="">
                     <span id='errorMessageLogin'></span>
@@ -44,7 +70,8 @@
             </div>
             <div id='registerDiv' class="col-md-6">
                 <form class="form-signin" id='formRegister' role="form">
-                    <h2>Register </h2>
+                    <h2>Register for Free! </h2>
+                    <p class="border">&nbsp</p>
                     <input type="username" name="usernamereg" class="form-control" placeholder="Username" required autofocus>
                     <input type="password" name="passwordreg" class="form-control" placeholder="Password" required>
                     <input type="password" name="passwordconfreg" class="form-control" placeholder="Confirm Password" required>
@@ -53,14 +80,21 @@
                 </form>
             </div>
         </div>
+        <div class="row">
+            <p class="border">&nbsp</p>
+            <img src="/static/kids.png" style='width:1200px;height:100px;'>
+            <p class="border">&nbsp</p>
+        </div>
     </div>
 
     <div id='FracSolverComponent' class="container">
         <div class='row'>
             <div id='fracSolverDiv' class="col-md-12">
                 <form class="form-fracInput" id='formFracInput' role="form">
+                    <p class="border">&nbsp</p>
                     <h4>Below is a fractions calculator. Enter a fraction, followed by one space, then an
                     operator(* - + /), another space and then another fraction and hit Enter. </h4>
+                    <p class="border">&nbsp</p>
                     <h6>Example: 1/3 + 1/3 </h6>
                     <p> </p>
                     <p> </p>
