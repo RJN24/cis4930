@@ -34,9 +34,11 @@ $(document).ready(function(){
 		
 		if(numerator === answer[0] && denominator === answer[1]){
 			$('#feedback').text('Correct.');
+			alert("Correct!")
 		}
 		else if(denominator === 1 && numerator === answer[0]){
 			$('#feedback').text('Correct.');
+			alert("Correct!")
 		}
 		else{
 			let correction = 'Incorrect. The correct answer was ' + numerator + "/" + denominator;
@@ -44,6 +46,7 @@ $(document).ready(function(){
 				correction += ' or' + numerator;
 			}
 			$('#feedback').text(correction);
+			alert("Incorrect!")
 
 		}
 		
