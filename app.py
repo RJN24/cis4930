@@ -24,7 +24,7 @@ USERS_TABLE = """ CREATE TABLE IF NOT EXISTS users (
 EVENT_TABLE = """ CREATE TABLE IF NOT EXISTS event(
                                 id TEXT PRIMARY_KEY, 
                                 username TEXT, 
-                                eventName TEXT, 
+                                 TEXT, 
                                 eventTime TEXT, 
                                 eventUrl TEXT); """
 
@@ -233,49 +233,39 @@ def fractionSolver():
             den1 = int(m.group(2))
             nue2 = int(m.group(4))
             den2 = int(m.group(5))
-
         if m.group(2) is None and m.group(5) is None:
             nue1 = int(m.group(1))
             den1 = 1
             nue2 = int(m.group(4))
             den2 = 1
-
         if m.group(2) is None and m.group(5) is not None:
             nue1 = int(m.group(1))
             den1 = 1
             nue2 = int(m.group(4))
             den2 = int(m.group(5))
-
         if m.group(5) is None and m.group(2) is not None:
             nue1 = int(m.group(1))
             den1 = int(m.group(2))
             nue2 = int(m.group(4))
             den2 = 1
-
         X = Fraction(nue1, den1)
         Y = Fraction(nue2, den2)
-
         print(m.group(3))
-
         if m.group(3) == '+':
             R = X + Y
-
         if m.group(3) == '-':
             R = X - Y
-
         if m.group(3) == '*':
             R = X * Y
-
         if m.group(3) == '/':
             R = X / Y
 
-        print("Solution is: ")
-        print(R)
-
     except ZeroDivisionError:
         R = "Sorry, cannot divide by 0. Please retry."
-
-    except:
+    except AttributeError as e:
+        R = "Sorry, please try again with the correct format."
+    except Exception as e:
+        print(e)
         R = "Sorry, you have entered an incorrect input. Please retry."
 
     return jsonify({
