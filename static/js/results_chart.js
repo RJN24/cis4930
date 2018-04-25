@@ -10,9 +10,9 @@ $(document).ready(function(){
 			dataType: "json",
 		success: function(data) {
 			console.log(data);
-			var scores = data;
+			let scores = data;
 //getBarGraphData();
-	var chartData = {
+	let chartData = {
 				labels: ['Level 1', 'Level 2', 'Level 3'],
 				datasets : [
 					{
@@ -33,16 +33,17 @@ $(document).ready(function(){
 				]
 			};
 
-var ctx = document.getElementById('results_chart').getContext('2d');
-var resultsChart = new Chart(ctx, {
-  type: 'horizontalBar',
-  data: chartData
+	let ctx = document.getElementById('results_chart').getContext('2d');
+	let resultsChart = new Chart(ctx, {
+  		type: 'horizontalBar',
+  		data: chartData
 		});
-		},
-		error: function(data) {
+	},
+			error: function(data) {
 			console.log(data);
 		}
 	});
-//}
-//})
-})
+
+        $('#results-chart').text("Results for User: " + String(data.uid));
+
+});
