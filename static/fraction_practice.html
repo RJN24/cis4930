@@ -17,9 +17,10 @@
      <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
      <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
      <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-     <script src="{{ url_for('static', filename='js/fraction_practice.js') }}"></script>
+	 <script src="{{ url_for('static', filename='js/fraction.js-master/index.js') }}"></script>
+	 <script src="{{ url_for('static', filename='js/fraction_practice.js') }}"></script>
 
-	 <script type="text/javascript" src="math.min.js"></script>
+
  </head>
  
  <body>
@@ -49,42 +50,64 @@
 			</div>
 			</div>
 		</div>
-	
+
 		<div id='fraction_practice' class='row'>
 			<div class="col">
 				<h1>Answer The Following Questions</h1>
-				<h4>Press enter to submit (can enter whole numbers if applicable): </h4>
+				<h4>Press enter to submit. Can enter whole numbers if applicable. </h4>
 				<span id='display_results'></span>
 				<form id='questions' role="form">
-					<label id="question1" for="answer1">question here</label><br/>
+					<label id="question1" for="answer1">question here</label>
+					<span for="answer1"></span>
+					<br/>
 					<input id="answer1" name= "answer1" class="form-control" type="text">
+
 			
-					<label id="question2" for="answer2">question here</label><br/>
+					<label id="question2" for="answer2">question here</label>
+					<span for="answer2"></span>
+					<br/>
 					<input id="answer2" name= "answer2" class="form-control" type="text">
 
-                    <label id="question3" for="answer1">question here</label><br/>
-					<input id="answer3" name= "answer1" class="form-control" type="text">
 
-					<label id="question4" for="answer2">question here</label><br/>
-					<input id="answer4" name= "answer2" class="form-control" type="text">
-
-                    <label id="question5" for="answer1">question here</label><br/>
-					<input id="answer5" name= "answer1" class="form-control" type="text">
-
-					<label id="question6" for="answer2">question here</label><br/>
-					<input id="answer6" name= "answer2" class="form-control" type="text">
-
-                    <label id="question7" for="answer1">question here</label><br/>
-					<input id="answer7" name= "answer1" class="form-control" type="text">
-
-					<label id="question8" for="answer2">question here</label><br/>
-					<input id="answer8" name= "answer2" class="form-control" type="text">
-
-                    <label id="question9" for="answer1">question here</label><br/>
-					<input id="answer9" name= "answer1" class="form-control" type="text">
-
-					<label id="question10" for="answer2">question here</label><br/>
-					<input id="answer10" name= "answer2" class="form-control" type="text">
+					<label id="question3" for="answer3">question here</label>
+					<span for="answer3"></span>
+					<br/>
+					<input id="answer3" name= "answer3" class="form-control" type="text">
+					
+					<label id="question4" for="answer4">question here</label>
+					<span for="answer4"></span>
+					<br/>
+					<input id="answer4" name= "answer4" class="form-control" type="text">
+					
+					<label id="question5" for="answer5">question here</label>
+					<span for="answer5"></span>
+					<br/>
+					<input id="answer5"  name= "answer5" class="form-control" type="text">
+					
+					<label id="question6" for="answer6">question here</label>
+					<span for="answer6"></span>
+					<br/>
+					<input id="answer6" name= "answer6" class="form-control" type="text">
+					
+					<label id="question7" for="answer7">question here</label>
+					<span for="answer7"></span>
+					<br/>
+					<input id="answer7" name= "answer7" class="form-control" type="text">
+					
+					<label id="question8" for="answer8">question here</label>
+					<span for="answer8"></span>
+					<br/>
+					<input id="answer8" name= "answer8" class="form-control" type="text">
+					
+					<label id="question9" for="answer9">question here</label>
+					<span for="answer9"></span>
+					<br/>
+					<input id="answer9" name= "answer9" class="form-control" type="text">
+					
+					<label id="question10" for="answer10">question here</label>
+					<span for="answer10"></span>
+					<br/>
+					<input id="answer10" name= "answer10" class="form-control" type="text">
 					<button id="save" class="btn btn-lg btn-primary btn-block" type="button">Submit</button>
 				</form>
 				
@@ -92,11 +115,6 @@
 				<span id='feedback'></span>
 			</div>
 		</div>
-		<div class="row">
-            <p class="border">&nbsp</p>
-            <img src="/static/kids.png" style='width:1200px;height:100px;'>
-            <p class="border">&nbsp</p>
-        </div>
 		
 
 	</div>
