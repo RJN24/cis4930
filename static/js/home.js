@@ -29,26 +29,30 @@ $(document).ready(function(){
     });
 
     $('#Results').on('click', function() {
-        let data = JSON.parse(localStorage.getItem('userdata'));
-        let user = {"User": String(data.uid)};
-        console.log(user);
-        $.ajax({
-            url: '/get_stats',
-			data: JSON.stringify(user),
-            type: 'POST',
-			contentType: "application/json",
-			dataType: "json",
-            success: function(response) {
-                console.log('submitted');
-                console.log(response)
-            },
-            error: function(error) {
-				console.log('ERROR');
-				console.log(error);
-            }
-        });
-        location.href = '/static/results.html';
+          location.href = '/results_chart.html';
     });
+
+//    $('#Results').on('click', function() {
+//        let data = JSON.parse(localStorage.getItem('userdata'));
+//        let user = {"User": String(data.uid)};
+//        console.log(user);
+//        $.ajax({
+//            url: '/get_stats',
+//			data: JSON.stringify(user),
+//            type: 'POST',
+//			contentType: "application/json",
+//			dataType: "json",
+//            success: function(response) {
+//                console.log('submitted');
+//                console.log(response)
+//            },
+//            error: function(error) {
+//				console.log('ERROR');
+//				console.log(error);
+//            }
+//        });
+//        location.href = '/static/results.html';
+//    });
 
     $('#logout').on('click', function() {
         localStorage.clear();
