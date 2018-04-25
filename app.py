@@ -21,16 +21,6 @@ USERS_TABLE = """ CREATE TABLE IF NOT EXISTS users (
                                 lv3_correct INTEGER DEFAULT 0,
                                 lv3_total INTEGER DEFAULT 0); """
 
-<<<<<<< HEAD
-=======
-EVENT_TABLE = """ CREATE TABLE IF NOT EXISTS event(
-                                id TEXT PRIMARY_KEY, 
-                                username TEXT, 
-                                 TEXT, 
-                                eventTime TEXT, 
-                                eventUrl TEXT); """
-
->>>>>>> salma-frontEnd
 # Route for /
 @app.route("/")
 def hello():
