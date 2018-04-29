@@ -1,4 +1,4 @@
-# Flask Template
+# Fraction Web
 
 # Description
-A flask template with mySQL, simple authentication, jQuery, and Bootstrap 4
+The final project for CIS4930 Advanced Python using Python, Flask, JavaScript, jQuery/Ajax, HTML, and CSS
